@@ -1,0 +1,54 @@
+using TMPro;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+public class Сounter : MonoBehaviour, IPointerClickHandler
+{
+    [SerializeField] private TextMeshProUGUI _figureText;
+
+    private Coroutine _coroutine;
+
+    private int _elapsed;
+    private bool _isEnabled = true;
+
+    private void Start()
+    {
+        _figureText.text = "";
+    }
+
+    void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
+    {
+        if (_isEnabled)
+        {
+            _coroutine = StartCoroutine(Countdown());
+            _isEnabled = false;
+        }
+        else
+        {
+            StopCoroutine(_coroutine);
+            _isEnabled = true;
+        }
+    }
+
+    private IEnumerator Countdown(int quantityOfterations = 100)
+    {
+        float delay = 0.5f;
+
+        var wait = new WaitForSeconds(delay);
+        
+        for(int i = 0; i < quantityOfterations; i++)
+        {
+            DisplayCoutdouwn(_elapsed);
+
+            _elapsed++;
+
+            yield return wait;
+        }
+    }
+
+    private void DisplayCoutdouwn(int count)
+    {
+        _figureText.text = count.ToString("");
+    }
+}
